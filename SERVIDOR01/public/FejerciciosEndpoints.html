@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Ejercicios de Rutas - Node.js</title>
+  <style>
+    .solucion {
+      display: none;
+      margin: 10px 0;
+      padding: 10px;
+      background: #f0f0f0;
+      border-left: 4px solid #007acc;
+    }
+
+    button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Ejercicios de Rutas para Node.js y Express</h1>
+  <ol>
+    <li>
+      Crea una ruta GET <b>/api/personas/total</b> que devuelva la cantidad total de personas registradas.<br>
+      <button onclick="mostrarSolucion(1)">Ver solución</button>
+      <pre class="solucion" id="sol1">
+// URL de prueba: http://localhost:3001/api/personas/total
+// En controllers/personasControllers.js
+export function totalPersonas(req, res) {
+  res.json({ total: personas.length });
+}
+
+// En routes/personas.js
+import { totalPersonas } from '../controllers/personasControllers.js';
+router.get('/total', totalPersonas);
+            </pre>
+    </li>
+    <li>
+      Crea una ruta GET <b>/api/personas/mayores/:edad</b> que devuelva solo las personas cuya edad sea igual o mayor
+      al valor recibido por parámetro.<br>
+      <button onclick="mostrarSolucion(2)">Ver solución</button>
+      <pre class="solucion" id="sol2">
+// URL de prueba: http://localhost:3001/api/personas/mayores/30
+// En controllers/personasControllers.js
+export function personasMayores(req, res) {
+  const edad = Number(req.params.edad);
+  const mayores = personas.filter(p => p.edad >= edad);
+  res.json(mayores);
+}
+
+// En routes/personas.js
+import { personasMayores } from '../controllers/personasControllers.js';
+router.get('/mayores/:edad', personasMayores);
+            </pre>
+    </li>
+    <li>
+      Crea una ruta DELETE <b>/api/personas</b> que elimine todas las personas del arreglo y devuelva un mensaje
+      confirmando la operación.<br>
+      <button onclick="mostrarSolucion(3)">Ver solución</button>
+      <pre class="solucion" id="sol3">
+// URL de prueba: http://localhost:3001/api/personas (método DELETE)
+// En controllers/personasControllers.js
+export function eliminarTodasPersonas(req, res) {
+  personas.length = 0;
+  res.json({ mensaje: 'Todas las personas han sido eliminadas.' });
+}
+
+// En routes/personas.js
+import { eliminarTodasPersonas } from '../controllers/personasControllers.js';
+router.delete('/', eliminarTodasPersonas);
+            </pre>
+    </li>
+    <li>
+      Crea una ruta GET <b>/api/personas/apellido/:apellido</b> que devuelva todas las personas que tengan el
+      apellido recibido por parámetro.<br>
+      <button onclick="mostrarSolucion(4)">Ver solución</button>
+      <pre class="solucion" id="sol4">
+// URL de prueba: http://localhost:3001/api/personas/apellido/Pérez
+// En controllers/personasControllers.js
+export function personasPorApellido(req, res) {
+  const apellido = req.params.apellido.toLowerCase();
+  const resultado = personas.filter(p => p.apellido.toLowerCase() === apellido);
+  res.json(resultado);
+}
+
+// En routes/personas.js
+import { personasPorApellido } from '../controllers/personasControllers.js';
+router.get('/apellido/:apellido', personasPorApellido);
+            </pre>
+    </li>
+    <li>
+      Crea una ruta GET <b>/api/personas/foto/:id</b> que devuelva solo la URL de la foto de la persona cuyo id
+      coincida con el recibido por parámetro.<br>
+      <button onclick="mostrarSolucion(5)">Ver solución</button>
+      <pre class="solucion" id="sol5">
+// URL de prueba: http://localhost:3001/api/personas/foto/1
+// En controllers/personasControllers.js
+export function fotoPersona(req, res) {
+  const id = Number(req.params.id);
+  const persona = personas.find(p => p.id === id);
+  if (persona) {
+    res.json({ foto: persona.foto });
+  } else {
+    res.status(404).json({ error: 'Persona no encontrada' });
+  }
+}
+
+// En routes/personas.js
+import { fotoPersona } from '../controllers/personasControllers.js';
+router.get('/foto/:id', fotoPersona);
+            </pre>
+    </li>
+    <li>
+      Crea una ruta GET <b>/api/personas/nombres</b> que devuelva un arreglo con solo los nombres de todas las personas
+      registradas.<br>
+      <button onclick="mostrarSolucion(6)">Ver solución</button>
+      <pre class="solucion" id="sol6">
+// URL de prueba: http://localhost:3001/api/personas/nombres
+// En controllers/personasControllers.js
+export function soloNombres(req, res) {
+  const nombres = personas.map(p => p.nombre);
+  res.json(nombres);
+}
+
+// En routes/personas.js
+import { soloNombres } from '../controllers/personasControllers.js';
+router.get('/nombres', soloNombres);
+      </pre>
+    </li>
+    <li>
+      Crea una ruta GET <b>/api/personas/nombres?lista=Ana,Juan,Pedro</b> que devuelva solo las personas cuyos nombres
+      estén en la lista recibida por query string.<br>
+      <button onclick="mostrarSolucion(7)">Ver solución</button>
+      <pre class="solucion" id="sol7">
+// URL de prueba: http://localhost:3001/api/personas/nombres?lista=Ana,Juan,Pedro
+// En controllers/personasControllers.js
+export function personasPorNombres(req, res) {
+  const lista = req.query.lista?.split(',').map(n => n.trim().toLowerCase()) || [];
+  const resultado = personas.filter(p => lista.includes(p.nombre.toLowerCase()));
+  res.json(resultado);
+}
+
+// En routes/personas.js
+import { personasPorNombres } from '../controllers/personasControllers.js';
+router.get('/nombres', personasPorNombres);
+      </pre>
+    </li>
+  </ol>
+  <script>
+    function mostrarSolucion(n) {
+      const sol = document.getElementById('sol' + n);
+      sol.style.display = (sol.style.display === 'block') ? 'none' : 'block';
+    }
+  </script>
+</body>
+
+</html>
