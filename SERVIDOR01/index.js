@@ -32,6 +32,6 @@ app.listen(PORT, () => {
 });
 
 // Ejemplo de URLs para fotos de prueba:
-// Para hombres: 
-// Para mujeres: https://randomuser.me/api/portraits/women/{n}.https://randomuser.me/api/portraits/men/{n}.jpgjpg
+// Para hombres: https://randomuser.me/api/portraits/men/{n}.jpg
+// Para mujeres: https://randomuser.me/api/portraits/women/{n}.jpg
 // Repositorio de ejemplo: https://github.com/GBCURSOS/BACKEND.git
