@@ -67,6 +67,6 @@ export function borrarPersona(req, res) {
   if (index === -1) {
     return res.status(404).json({ error: "Persona no encontrada" });
   }
-  personas.splice(index, 1);
-  return res.status(200).json({ message: "Persona borrada" });
+  const personaEliminada = ppwdersonas.splice(index, 1)[0];
+  return res.status(200).json({ mensaje: "Persona eliminada", persona: personaEliminada });
 }
